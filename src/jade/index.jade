@@ -1,19 +1,57 @@
 doctype 5
 html
   head
-    link(rel='stylesheet', type='text/css', href="css/styles.css")
-    script(type='text/javascript', src='js/vendor/require.js')
+    link(rel='stylesheet', type='text/css', href="/css/bootstrap.min.css")
+    link(rel='stylesheet', type='text/css', href="/css/styles.css")
+    script(type='text/javascript', src='/js/vendor/require.js')
     script(type='text/javascript')
       require.config({
-        baseUrl: "js/modules",
+        baseUrl: "/js/modules",
         paths: {
-          'jquery': 'https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min'
+          'jquery': 'http://code.jquery.com/jquery-1.8.3.min',
+          'backbone': '../vendor/backbone',
+          'underscore': '../vendor/underscore',
+          'transparency': '../vendor/transparency',
+          'moment': '../vendor/moment',
+          'highcharts': '../vendor/highcharts',
+          'uri': '../vendor/URI.min',
+          'SecondLevelDomains': '../vendor/SecondLevelDomains',
+          'IPv6': '../vendor/IPv6',
+          'punycode': '../vendor/punycode'
+        },
+        shim: {
+          'underscore': {
+            exports: '_'
+          },
+          'backbone': {
+            deps: ['underscore', 'jquery'],
+            exports: 'Backbone'
+          },
+          'highcharts': {
+            exports: 'Highcharts'
+          }
         }
       });
-    title HTML5 Template Project
+    title &lt;3
   body
+    header
+      nav
+
     #main
-      h1 Hello Template
+      table#messages
+        tr.message
+          td.message-icon
+            i.icon.icon-tag
+          td.message-user
+            span.displayName
+            span.username   
+          td.message-timestamp
+            span.timestamp
+          td.message-body
+            span.body
+      #stats
+        #userMessageCount.chart.chart-pie
+        #messageCountPerHour.chart
 
     script(type='text/javascript')
       require(['app'], function(app){ app.main() })

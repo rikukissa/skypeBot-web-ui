@@ -1,0 +1,76 @@
+*
+  text-decoration none
+  margin 0
+  list-style none
+html, body
+  margin 0
+  font 13px 'Helvetica Neue', Helvetica, Arial
+  color #333
+
+header
+  height 75px
+  background-image linear-gradient(bottom, rgb(27,55,97) 7%, rgb(38,83,150) 54%, rgb(64,114,189) 95%)
+  background-image -o-linear-gradient(bottom, rgb(27,55,97) 7%, rgb(38,83,150) 54%, rgb(64,114,189) 95%)
+  background-image -moz-linear-gradient(bottom, rgb(27,55,97) 7%, rgb(38,83,150) 54%, rgb(64,114,189) 95%)
+  background-image -webkit-linear-gradient(bottom, rgb(27,55,97) 7%, rgb(38,83,150) 54%, rgb(64,114,189) 95%)
+  background-image -ms-linear-gradient(bottom, rgb(27,55,97) 7%, rgb(38,83,150) 54%, rgb(64,114,189) 95%)
+
+  background-image -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.07, rgb(27,55,97)),
+    color-stop(0.54, rgb(38,83,150)),
+    color-stop(0.95, rgb(64,114,189))
+  )
+  border-bottom 1px solid #DDD
+  box-shadow 0 4px 4px rgba(0, 0, 0, 0.05s)
+  nav
+    a
+      height 50px
+      padding 0 20px
+      display inline-block
+      line-height 50px
+      text-align center
+      color #fff
+      &:hover
+        background #f0f0f0
+
+#main
+  margin-top 5px
+
+#messages
+  width 100%
+  border-collapse collapse
+  .message
+    padding 10px
+    background #f5f5f5
+    overflow hidden
+    border-bottom 1px solid #DDD
+    &:nth-child(odd)
+      background #fff
+  td
+    padding 10px
+  .message-timestamp
+    text-align center
+  .message-user
+    span  
+      display block
+      &.username
+        font-size 11px
+        color #CCC
+
+.tag
+  display inline-block
+  padding 2px
+  background rgba(255, 0, 0, 0.1)
+  border 1px solid rgba(255, 0, 0, 0.2)
+  -webkit-border-radius 3px
+  -moz-border-radius 3px
+  border-radius 3px
+  margin 0 5px
+
+#stats
+  .chart
+    width 50%
+    float left

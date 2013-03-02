@@ -1,3 +1,5 @@
+serverProc = null
+
 module.exports = (grunt) ->
   grunt.initConfig
     coffee:
@@ -26,13 +28,11 @@ module.exports = (grunt) ->
         options:
           compress: true
 
-    connect:
-      server:
-        options:
-          port: 8000
-          base: "public"
-
     regarde:
+      # server:
+      #   files: ["src/server/**/*.coffee"]
+      #   tasks: ["coffee", "reload", "server"]
+
       coffee:
         files: ["src/coffee/**/*.coffee"]
         tasks: ["coffee", "reload"]
@@ -58,4 +58,24 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks "grunt-contrib-connect"
   grunt.loadNpmTasks "grunt-regarde"
 
-  grunt.registerTask "default", ['coffee', 'jade', 'stylus', 'connect', 'reload', 'regarde']
+  grunt.registerTask "server", () ->
+    execServer = () ->
+      exec = 'node_modules/coffee-script/bin/coffee'
+      exec = __dirname + '/node_modules/.bin/coffee.cmd' if process.platform is 'win32'
+      serverProc = require('child_process').spawn exec, ['runserver.coffee'],
+        stdio: 'inherit'
+      console.log serverProc.pid
+    
+    if serverProc?
+      console.log "trying to kill old server " + serverProc.pid
+    
+      serverProc.on 'close', ->
+        console.log serverProc     
+        setTimeout ->
+          execServer()
+        , 5000
+      serverProc.kill()
+    else
+      execServer()
+
+  grunt.registerTask "default", ['coffee', 'jade', 'stylus', 'server', 'reload', 'regarde']
