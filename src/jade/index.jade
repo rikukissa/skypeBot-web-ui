@@ -13,6 +13,7 @@ html
           'underscore': '../vendor/underscore',
           'transparency': '../vendor/transparency',
           'moment': '../vendor/moment',
+          'knockout': '../vendor/knockout',
           'highcharts': '../vendor/highcharts',
           'uri': '../vendor/URI.min',
           'SecondLevelDomains': '../vendor/SecondLevelDomains',
@@ -27,8 +28,9 @@ html
             deps: ['underscore', 'jquery'],
             exports: 'Backbone'
           },
-          'highcharts': {
-            exports: 'Highcharts'
+          "highcharts": {
+              "exports": "Highcharts",
+              "deps": [ "jquery"] 
           }
         }
       });
@@ -36,12 +38,16 @@ html
   body
     header
       nav
+        a(href='/', data-bind='css: { active: currentView() == "listView"}')
+          i.icon.icon-white.icon-th-list
+        a(href='/stats', data-bind='css: { active: currentView() == "statsView"}')
+          i.icon.icon-white.icon-eye-open
 
     #main
-      table#messages
+      table#messages.view(data-bind='visible: currentView() == "listView"')
         tr.message
           td.message-icon
-            i.icon.icon-tag
+            //- i.icon.icon-tag
           td.message-user
             span.displayName
             span.username   
@@ -49,9 +55,11 @@ html
             span.timestamp
           td.message-body
             span.body
-      #stats
+      #stats.view(data-bind='visible: currentView() == "statsView"')
+        h2.title
         #userMessageCount.chart.chart-pie
         #messageCountPerHour.chart
+        #userMessageCountPerHour.chart.chart-full
 
     script(type='text/javascript')
       require(['app'], function(app){ app.main() })

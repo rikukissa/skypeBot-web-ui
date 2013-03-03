@@ -4,12 +4,15 @@ define (require) ->
   utils          = require('utils')
   Backbone       = require('backbone')
   Transparency   = require('transparency')
+  Highcharts     = require('highcharts')
 
   Backbone.View.extend  
     initialize: ->
       $.getJSON '/api/stats', @render
     
     render: (stats) ->
+
+      $('#stats .title').html("Viestit (#{stats.messageCount}kpl) ajalta #{utils.formatTimestamp(stats.firstMessageAt)} - #{utils.formatTimestamp(stats.lastMessageAt)}")
 
       # User messages
       series = []
@@ -20,10 +23,10 @@ define (require) ->
           cx: 0.5
           cy: 0.3
           r: 0.7
-        stops: [[0, color], [1, Highcharts.Color(color).brighten(-0.3).get("rgb")]] # darken
+        stops: [[0, color], [1, Highcharts.Color(color).brighten(-0.3).get("rgb")]]
       )
 
-      chart = new Highcharts.Chart(
+      new Highcharts.Chart(
         chart:
           renderTo: "userMessageCount"
           plotBackgroundColor: null
@@ -31,8 +34,7 @@ define (require) ->
           plotShadow: false
 
         title:
-          text: "Viestit (#{stats.messageCount}kpl) ajalta #{utils.formatTimestamp(stats.firstMessageAt)} - #{utils.formatTimestamp(stats.lastMessageAt)}"
-
+          text: "Viestijakauma käyttäjien mukaan"
         tooltip:
           pointFormat: "{series.name}: <b>{point.percentage}%</b>"
           percentageDecimals: 1
@@ -57,7 +59,8 @@ define (require) ->
       # Messages by time
       categories = []
       categories.push i + "" for i in [0..23]
-      chart = new Highcharts.Chart(
+      
+      new Highcharts.Chart(
         chart:
           renderTo: "messageCountPerHour"
           type: "spline"
@@ -81,9 +84,47 @@ define (require) ->
           formatter: -> @y + "kpl"
           
         series: [
-          name: "Viestit"
+          name: "Kaikki viestit"
           data: stats.messageCountPerHour
         ]
+        navigation:
+          menuItemStyle:
+            fontSize: "10px"
+      )
+      # User by time
+      categories = []
+      categories.push i + "" for i in [0..23]
+
+      series = []
+      for u in stats.users
+        series.push
+          name: u.username
+          data: u.messageCountPerHour
+      
+      new Highcharts.Chart(
+        chart:
+          renderTo: "userMessageCountPerHour"
+          type: "spline"
+
+        title:
+          text: "Viestimäärät kellonajan mukaan"
+
+        xAxis:
+          categories: categories
+
+        yAxis:
+          title:
+            text: "Viestien määrä"
+
+          min: 0
+          minorGridLineWidth: 0
+          gridLineWidth: 0
+          alternateGridColor: null
+
+        tooltip:
+          formatter: -> @y + "kpl"
+          
+        series: series
         navigation:
           menuItemStyle:
             fontSize: "10px"

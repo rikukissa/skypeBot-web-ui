@@ -1,3 +1,6 @@
+fs = require('fs')
+config = JSON.parse fs.readFileSync('config.json')
+
 serverProc = null
 
 module.exports = (grunt) ->
@@ -49,7 +52,7 @@ module.exports = (grunt) ->
       port: 6001
       proxy:
         host: 'localhost'
-        port: 8000
+        port: config.httpPort
 
   grunt.loadNpmTasks "grunt-reload"
   grunt.loadNpmTasks "grunt-contrib-coffee"
